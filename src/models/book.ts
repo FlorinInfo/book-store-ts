@@ -25,10 +25,14 @@ export default  class BookManager {
 
     public deleteBook(id:string) {
         const index = books.findIndex((book:Book) => book.id === id);
-        console.log(index)
-        // console.log(index)
         books.splice(index, 1);
-        // fs.writeFileSync(path.resolve(__dirname,'../data/books.json'), JSON.stringify({ books }));
+        fs.writeFileSync(path.resolve(__dirname,'../data/books.json'), JSON.stringify({ books }));
+    }
+
+    public editBook(book:any, title:string|null, author:string|null) {
+        const index = books.findIndex((b:Book) => b.id === book.id);
+        books[index].title = title;
+        books[index].author = author;
     }
 
     public generateId():string {

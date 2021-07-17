@@ -37,3 +37,22 @@ export const deleteBookById = (req: Request, res: Response) => {
         res.send({message:"Book deleted!"})
     }
 }
+
+export const putEditBook = (req: Request, res: Response) => {
+    const book = new BookManager();
+    const found = book.findBook(req.body.id);
+    if(found) {
+        if(req.body.title && req.body.author) book.editBook(found, req.body.title, req.body.author);
+        else {
+            if(req.body.title && req.body.author === undefined) book.editBook(found, req.body.title, null);
+            if(req.body.author && req.body.title === undefined) book.editBook(found, null, req.body.author);
+            if(req.body.author === undefined && req.body.title === undefined) {
+                res.send({message:"Please edit title or author."})
+            }
+        }
+
+    }
+    else {
+        res.send({message:"Book doesn't exist"});
+    }
+}
