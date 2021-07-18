@@ -29,10 +29,11 @@ export default  class BookManager {
         fs.writeFileSync(path.resolve(__dirname,'../data/books.json'), JSON.stringify({ books }));
     }
 
-    public editBook(book:any, title:string|null, author:string|null) {
+    public editBook(book:any, title:string|undefined, author:string|undefined) {
         const index = books.findIndex((b:Book) => b.id === book.id);
-        books[index].title = title;
-        books[index].author = author;
+        title != undefined ? books[index].title = title : console.log("Title not sended");
+        author != undefined ? books[index].author = author : console.log("Author not sended");   
+        fs.writeFileSync(path.resolve(__dirname,'../data/books.json'), JSON.stringify({ books }));
     }
 
     public generateId():string {

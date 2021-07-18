@@ -1,4 +1,4 @@
-import express, {json, Request, Response} from "express";
+import express, {json, Request, response, Response} from "express";
 import BookManager, { Book } from "../models/book";
 const { books } = require('../data/books.json');
 
@@ -40,19 +40,13 @@ export const deleteBookById = (req: Request, res: Response) => {
 
 export const putEditBook = (req: Request, res: Response) => {
     const book = new BookManager();
-    const found = book.findBook(req.body.id);
-    if(found) {
-        if(req.body.title && req.body.author) book.editBook(found, req.body.title, req.body.author);
-        else {
-            if(req.body.title && req.body.author === undefined) book.editBook(found, req.body.title, null);
-            if(req.body.author && req.body.title === undefined) book.editBook(found, null, req.body.author);
-            if(req.body.author === undefined && req.body.title === undefined) {
-                res.send({message:"Please edit title or author."})
-            }
-        }
-
+    let found = book.findBook(req.body.id);
+    if(found && (req.body.title || req.body.author)) {
+        book.editBook(found, req.body.title, req.body.author);
+        res.send({message:"Book edited with succes!"});
+        
     }
     else {
-        res.send({message:"Book doesn't exist"});
+        res.send({message:"Book doesn't exist or you didn't provided the title or author for editing"});
     }
 }
