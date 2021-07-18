@@ -44,7 +44,6 @@ export const putEditBook = (req: Request, res: Response) => {
     if(found && (req.body.title || req.body.author)) {
         book.editBook(found, req.body.title, req.body.author);
         res.send({message:"Book edited with succes!"});
-        
     }
     else {
         res.send({message:"Book doesn't exist or you didn't provided the title or author for editing"});
